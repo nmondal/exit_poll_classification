@@ -1,13 +1,13 @@
 import csv
 from whoosh.index import create_in
 from whoosh.fields import *
-import whoosh.index as index
-from whoosh import qparser
-from whoosh.qparser import QueryParser
+
+from exit_poll import predict_sentiment, weighted_score
 
 INDEX_DIR = "./index_2"
 DATA_FILE = "./data_dir/training.1600000.processed.noemoticon.csv"
 FIELDS = ["target", "tid", "date", "flag", "user", "text"]
+LABEL_CONFIG = {"label_column": "senti", "labels": ["4", "0"]}
 
 
 def import_data():
@@ -33,35 +33,6 @@ def import_data():
     pass
 
 
-def analyze(results):
-    N = 0.0
-    pos = 0
-    neg = 0
-    for r in results:
-        N += 1.0
-        if r["senti"] == '4':
-            pos += 1
-        elif r["senti"] == '0':
-            neg += 1
-        print(r)
-    print ('pos : {}  neg : {}'.format(pos / N, neg / N))
-
-
-def predict_sentiment():
-    ix = index.open_dir(INDEX_DIR)
-    with ix.searcher() as searcher:
-        qp = QueryParser("text", ix.schema, group=qparser.OrGroup)
-        while True:
-            print("enter>")
-            search_text = sys.stdin.readline()
-            if search_text == 'q':
-                return
-            query = qp.parse(search_text)
-            results = searcher.search(query)
-            analyze(results)
-    pass
-
-
 if __name__ == '__main__':
     # import_data()
-    predict_sentiment()
+    predict_sentiment(INDEX_DIR, LABEL_CONFIG, weighted_score)

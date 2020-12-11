@@ -46,7 +46,7 @@ def predict_sentiment(search_index_dir, label_config, prediction_algorithm=naive
     with ix.searcher() as searcher:
         qp = QueryParser("text", ix.schema, group=qparser.OrGroup)
         while True:
-            print("Enter Statement to Analyze Sentiment:")
+            print("Enter Statement to Classify (q to exit):")
             search_text = sys.stdin.readline()
             if search_text.strip() == 'q':
                 break
