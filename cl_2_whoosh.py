@@ -7,7 +7,7 @@ from exit_poll import predict_sentiment, weighted_score
 INDEX_DIR = "./index_2"
 DATA_FILE = "./data_dir/training.1600000.processed.noemoticon.csv"
 FIELDS = ["target", "tid", "date", "flag", "user", "text"]
-LABEL_CONFIG = {"label_column": "senti", "labels": ["4", "0"]}
+LABEL_CONFIG = {"label_column": "senti", "label_densities": {"4": 0.5, "0": 0.5}}
 
 
 def import_data():

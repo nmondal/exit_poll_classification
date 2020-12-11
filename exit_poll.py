@@ -7,31 +7,41 @@ import sys
 Here is how a classical config will look like
 {
   "label_column" : "senti",
-  "labels" : [ "A", "B", "C", ... ]
+  "label_densities" : { "A" : 0.1, "B" : 0.6, "C" : 0.3 }
 }
 
 """
 
+__LABEL_COLUMN__ = "label_column"
+__LABEL_DENSITIES__ = "label_densities"
 
-def naive_counter(r):
+
+def naive_counter(result, config):
     return 1
 
 
-def weighted_score(r):
-    return r.score
+def weighted_score(result, config):
+    return result.score
+
+
+def normalised_weighted_score(result, config):
+    label_value = result[config[__LABEL_COLUMN__]]
+    relative_freq = config[__LABEL_DENSITIES__][label_value]
+    return result.score * (1.0 / relative_freq)
 
 
 def do_exit_poll(results, config, mapper_algorithm=naive_counter):
     resp = dict()
     n = 0.0
     # init
-    for label in config["labels"]:
+    for label in config[__LABEL_DENSITIES__]:
         resp[label] = 0.0
     # process
     for r in results:
-        n += mapper_algorithm(r)
-        label_value = r[config["label_column"]]
-        resp[label_value] += mapper_algorithm(r)
+        cur_score = mapper_algorithm(r, config)
+        n += cur_score
+        label_value = r[config[__LABEL_COLUMN__]]
+        resp[label_value] += cur_score
         print(r)
     if n != 0.0:
         for label in resp:
