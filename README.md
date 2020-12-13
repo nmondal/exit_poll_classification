@@ -83,8 +83,15 @@ This is available in the file `extern_tests.py`. The accuracy of the system is c
 
  It is now becoming a well known phenomenon that the algorithm perform very heavily in the toy-testing domain. But in real world they crack up. This was already predicted in another paper - https://arxiv.org/abs/1407.7417  .
 
-The real competition of ML is not against the accuracy in absolute terms - but against a population of human workers trying to classify. 
+Another analysis of the same ( treating sentiment as sentiment ) produced close to 60% accuracy. 
+
+https://towardsdatascience.com/fine-grained-sentiment-analysis-in-python-part-1-2697bb111ed4
+
 With more than 80% accuracy, these algorithms are already at the top. 
+
+The trick is just label sentiment as another label. 
+
+The real competition of ML is not against the accuracy in absolute terms - but against a population of human workers trying to classify. 
 
 ## Caution
 
