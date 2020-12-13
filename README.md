@@ -52,7 +52,29 @@ Both of them perform sincerely and they’re the only reason the film isn’t a 
 
  In this million data set `0` is negative sentiment, `4` is positive sentiment. 
 
+### Cross Testing : Train Generic - Test Specific 
 
+We have trained with the 1.4 million data - and test it against ( pretty crazily ) against the airlines twitter dataset which is massively biased towards negative: `"label_densities": {"positive": 0.16, "negative": 0.63, "neutral": 0.21}`.
+
+The file is `cross_test.py`.
+
+Turns out, the naive classification - w/o any special correction for check `max{}` is 75% accurate! Further   `grep False out.txt | grep '0.5' | grep 'positive' | wc -l`  has shown that additional 8% is labelled wrong because of bias - in case 50/50 - because it is negatively biased, it should be put to positive bucket to counter it.  That will increase the accuracy to `75+8 = 83%`.
+
+### Self Testing : Testing against it's own Data 
+
+<TBD>
+
+
+
+### Further Improvements 
+
+Can it be made to be more accurate? It can be by adding appropriate check and balanced (read `if else`) which are termed as `gate`s. Does it make sense? 
+
+**No**.
+
+ It is now becoming a well known phenomenon that the algorithm perform very heavily in the toy-testing domain. But in real world they crack up. This was already predicted in another paper - https://arxiv.org/abs/1407.7417  .
+
+The real competition of ML is not against the accuracy in absolute terms - but against a population of human workers trying to classify. With more than 80% accuracy, these algorithms are already there. 
 
 ## Caution
 
