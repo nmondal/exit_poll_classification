@@ -58,7 +58,9 @@ We have trained with the 1.4 million data - and test it against ( pretty crazily
 
 The file is `cross_test.py`.
 
-Turns out, the naive classification - w/o any special correction for check `max{}` is 75% accurate! Further   `grep False out.txt | grep '0.5' | grep 'positive' | wc -l`  has shown that additional 8% is labelled wrong because of bias - in case 50/50 - because it is negatively biased, it should be put to positive bucket to counter it.  That will increase the accuracy to `75+8 = 83%`.
+Turns out, the naive classification - w/o any special correction for check `max{}` is 75% accurate with `limit:10` ! 
+Further   `grep False out.txt | grep '0.5' | grep 'positive' | wc -l`  has shown that additional 8% is labelled wrong because of bias - in case 50/50 - because it is negatively biased, it should be put to positive bucket to counter it.  That will increase the accuracy to `75+8 = 83%`.
+By changing the `limit:15` one can increase the accuracy to `80%`.
 
 ### Self Testing : Testing against it's own Data 
 
