@@ -78,11 +78,17 @@ Can it be made to be more accurate? It can be by adding appropriate check and ba
 
 **No**.
 
+Take for example the benchmark ran on top of the https://pypi.org/project/textblob/ project.
+This is available in the file `extern_tests.py`. The accuracy of the system is close to `16%`. 
+
  It is now becoming a well known phenomenon that the algorithm perform very heavily in the toy-testing domain. But in real world they crack up. This was already predicted in another paper - https://arxiv.org/abs/1407.7417  .
 
-The real competition of ML is not against the accuracy in absolute terms - but against a population of human workers trying to classify. With more than 80% accuracy, these algorithms are already there. 
+The real competition of ML is not against the accuracy in absolute terms - but against a population of human workers trying to classify. 
+With more than 80% accuracy, these algorithms are already at the top. 
 
 ## Caution
 
-This is a toy to showcase that there are way too many ways to foundational thinking about the discipline of AI. Authors fully understand it - and is mentioned clearly in the paper. There are of course better class of algorithms available to do 2 classification, but for multi-label classification and as an incredibly easy approach - nothing is simpler.
+This is a toy to showcase that there are way too many ways to foundational thinking about the discipline of AI. 
+Authors fully understand it - and is mentioned clearly in the paper. There are of course better class of algorithms available to do 2 classification, 
+but for multi-label classification and as an incredibly easy approach - nothing is simpler.
 
