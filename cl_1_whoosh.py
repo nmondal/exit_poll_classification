@@ -2,7 +2,7 @@ import csv
 from whoosh.index import create_in
 from whoosh.fields import *
 
-from exit_poll import predict_sentiment, normalised_weighted_score
+from exit_poll import predict_classification, normalised_weighted_score
 
 INDEX_DIR = "./index_1"
 DATA_FILE_LOCATION = "./data_dir/Tweets.csv"
@@ -33,4 +33,4 @@ def import_data():
 
 if __name__ == '__main__':
     # import_data()
-    predict_sentiment(INDEX_DIR, LABEL_CONFIG, normalised_weighted_score)
+    predict_classification(INDEX_DIR, LABEL_CONFIG, normalised_weighted_score)

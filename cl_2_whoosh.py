@@ -2,7 +2,7 @@ import csv
 from whoosh.index import create_in
 from whoosh.fields import *
 
-from exit_poll import predict_sentiment, weighted_score
+from exit_poll import predict_classification, weighted_score
 
 INDEX_DIR = "./index_2"
 DATA_FILE = "./data_dir/training.1600000.processed.noemoticon.csv"
@@ -35,4 +35,4 @@ def import_data():
 
 if __name__ == '__main__':
     # import_data()
-    predict_sentiment(INDEX_DIR, LABEL_CONFIG, weighted_score)
+    predict_classification(INDEX_DIR, LABEL_CONFIG, weighted_score)
