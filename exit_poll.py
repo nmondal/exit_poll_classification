@@ -1,4 +1,6 @@
 import csv
+from math import ceil
+
 import whoosh.index as index
 from whoosh import qparser
 from whoosh.qparser import QueryParser
@@ -19,6 +21,8 @@ __TEXT_COLUMN__ = "text_column"
 __PREDICTION_COLUMN__ = "_p"
 __LABEL_MAP__ = "label_mapping"
 __ID_COLUMN__ = "id_column"
+__LIMIT__ = "limit"
+
 __DO_PRINT__ = False
 
 
@@ -69,6 +73,10 @@ def do_exit_poll(results, config, mapper_algorithm=naive_counter):
 
 def predict_classification(search_index_dir, label_config, prediction_algorithm=naive_counter):
     ix = index.open_dir(search_index_dir)
+    if __LIMIT__ in label_config:
+        limit = label_config[__LIMIT__]
+    else:
+        limit = int(ceil(len(label_config[__LABEL_DENSITIES__]) * 1.5))
     with ix.searcher() as searcher:
         qp = QueryParser("text", ix.schema, group=qparser.OrGroup)
         while True:
@@ -77,14 +85,19 @@ def predict_classification(search_index_dir, label_config, prediction_algorithm=
             if search_text.strip() == 'q':
                 break
             query = qp.parse(search_text)
-            results = searcher.search(query)
+            results = searcher.search(query, limit=limit)
             do_exit_poll(results, label_config, prediction_algorithm)
     pass
 
 
 def verify_classification(question_bank_csv_location, question_bank_config,
-                          search_index_dir, label_config, out_file_path="./out.txt", prediction_algorithm=naive_counter):
+                          search_index_dir, label_config, out_file_path="./out.txt",
+                          prediction_algorithm=naive_counter):
     ix = index.open_dir(search_index_dir)
+    if __LIMIT__ in label_config:
+        limit = label_config[__LIMIT__]
+    else:
+        limit = int(ceil(len(label_config[__LABEL_DENSITIES__]) * 1.5))
     with ix.searcher() as searcher:
         qp = QueryParser("text", ix.schema, group=qparser.OrGroup)
         with open(question_bank_csv_location) as csvfile:
@@ -102,7 +115,7 @@ def verify_classification(question_bank_csv_location, question_bank_config,
                 t_label = unicode(row[label_column])
                 t_text = row[text_column].decode('utf-8')
                 query = qp.parse(t_text)
-                results = searcher.search(query)
+                results = searcher.search(query, limit=limit)
                 prediction = do_exit_poll(results, label_config, prediction_algorithm)
                 if __PREDICTION_COLUMN__ in prediction:
                     if t_label not in label_map:

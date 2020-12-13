@@ -62,8 +62,12 @@ Turns out, the naive classification - w/o any special correction for check `max{
 
 ### Self Testing : Testing against it's own Data 
 
-<TBD>
+Given the system does not learn - any specifics about labelling at all, one can use it over itself to check 
+if the algorithm can predict it's own data. This should be reasonably high.
+Turns out it is, with the following formula for `int( ceil( num_of_labels ) * 1.5))` 
+The accuracy of the prediction using `weighted_score` algorithm goes to `94%`.
 
+The corresponding self-test file is `self_test.py`.
 
 
 ### Further Improvements 
