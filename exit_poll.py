@@ -83,17 +83,21 @@ def predict_classification(search_index_dir, label_config, prediction_algorithm=
 
 
 def verify_classification(question_bank_csv_location, question_bank_config,
-                          search_index_dir, label_config, prediction_algorithm=naive_counter):
+                          search_index_dir, label_config, out_file_path="./out.txt", prediction_algorithm=naive_counter):
     ix = index.open_dir(search_index_dir)
     with ix.searcher() as searcher:
         qp = QueryParser("text", ix.schema, group=qparser.OrGroup)
         with open(question_bank_csv_location) as csvfile:
             reader = csv.DictReader(csvfile)
+            of = open(out_file_path, 'w')
             id_column = question_bank_config[__ID_COLUMN__]
             label_column = question_bank_config[__LABEL_COLUMN__]
             text_column = question_bank_config[__TEXT_COLUMN__]
             label_map = question_bank_config[__LABEL_MAP__]
+            line_no = 1
             for row in reader:
+                line_no += 1
+                print (line_no)
                 t_id = unicode(row[id_column])
                 t_label = unicode(row[label_column])
                 t_text = row[text_column].decode('utf-8')
@@ -102,12 +106,13 @@ def verify_classification(question_bank_csv_location, question_bank_config,
                 prediction = do_exit_poll(results, label_config, prediction_algorithm)
                 if __PREDICTION_COLUMN__ in prediction:
                     if t_label not in label_map:
-                        print ('{} : {} vs {}'.format(t_id, t_label, prediction))
+                        of.write('{} : {} vs {}\n'.format(t_id, t_label, prediction))
                     else:
                         matched = label_map[t_label] == prediction[__PREDICTION_COLUMN__]
-                        print ('{} : {} : {} vs {}'.format(t_id, matched, t_label, prediction))
+                        of.write('{} : {} : {} vs {}\n'.format(t_id, matched, t_label, prediction))
                     pass
                 else:
-                    print ('{} : FAILED'.format(t_id))
-
+                    of.write('{} : FAILED\n'.format(t_id))
+                of.flush()
+            of.close()
     pass
